@@ -1,15 +1,11 @@
-import { useState, useEffect, createContext, useContext, type ReactNode } from 'react'
+import { useState } from 'react'
 import { Outlet, NavLink, useLocation } from 'react-router-dom'
 import { clsx } from 'clsx'
 import {
   LayoutDashboard, FileText, Briefcase, MessageSquare, PenTool,
   History, Map, Settings, User, ChevronLeft, ChevronRight,
-  Search, Bell, LogOut, Menu, X
+  Search, Bell, Menu, X
 } from 'lucide-react'
-
-// Sidebar context
-const SidebarContext = createContext({ collapsed: false, toggle: () => {} })
-export const useSidebar = () => useContext(SidebarContext)
 
 const navSections = [
   {
@@ -240,7 +236,7 @@ export function AppLayout() {
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <SidebarContext.Provider value={{ collapsed, toggle: () => setCollapsed(!collapsed) }}>
+    <>
       <div className="min-h-screen bg-background">
         {/* Desktop sidebar */}
         <div className="hidden lg:block">
@@ -260,6 +256,6 @@ export function AppLayout() {
           </main>
         </div>
       </div>
-    </SidebarContext.Provider>
+    </>
   )
 }

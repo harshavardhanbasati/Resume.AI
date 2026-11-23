@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext, useCallback, type ReactNode } from 'react'
+import { useState, useEffect, useCallback, type ReactNode } from 'react'
 import { clsx } from 'clsx'
 import { X, CheckCircle, AlertTriangle, AlertCircle, Info } from 'lucide-react'
 
@@ -11,13 +11,6 @@ interface Toast {
   message?: string
   duration?: number
 }
-
-interface ToastContextType {
-  addToast: (toast: Omit<Toast, 'id'>) => void
-}
-
-const ToastContext = createContext<ToastContextType>({ addToast: () => {} })
-export const useToast = () => useContext(ToastContext)
 
 const icons: Record<ToastType, typeof CheckCircle> = {
   success: CheckCircle,
@@ -77,24 +70,19 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: (id: string)
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([])
 
-  const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
-    const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
-    setToasts((prev) => [...prev, { ...toast, id }])
-  }, [])
-
   const dismissToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id))
   }, [])
 
   return (
-    <ToastContext.Provider value={{ addToast }}>
+    <>
       {children}
       <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-2 w-[380px] max-w-[calc(100vw-2rem)]">
         {toasts.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onDismiss={dismissToast} />
         ))}
       </div>
-    </ToastContext.Provider>
+    </>
   )
 }
 
