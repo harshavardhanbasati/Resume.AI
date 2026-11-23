@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg
+psycopg-binary
+pydantic
+pydantic-settings
+email-validator
+bcrypt
+PyJWT
+pymupdf
+python-docx
+python-multipart
+httpx
